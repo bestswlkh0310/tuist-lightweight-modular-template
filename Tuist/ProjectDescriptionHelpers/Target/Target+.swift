@@ -7,114 +7,110 @@
 
 import ProjectDescription
 import EnvironmentPlugin
+import ScriptPlugin
 
 public extension Target {
     
-    static func makeApp(
+    static func app(
         target: ModulePaths.App,
         dependenceis: [TargetDependency] = [],
         infoPlist: InfoPlist
     ) -> Self {
-        .makeTarget(name: target.rawValue,
-                    product: .app,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
-                    infoPlist: infoPlist,
-                    sources: ["Sources/**"],
-                    resources: ["Resources/**"],
-                    scripts: [.swiftLint],
-                    dependencies: dependenceis)
+        .makeTarget(
+            name: target.rawValue,
+            product: .app,
+            bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
+            infoPlist: infoPlist,
+            sources: ["Sources/**"],
+            resources: ["Resources/**"],
+            scripts: [.swiftLint],
+            dependencies: dependenceis
+        )
     }
     
-    static func makeFeature(
+    static func feature(
         target: ModulePaths.Feature,
+        type: MicroModule.MicroFeatureModule,
         dependencies: [TargetDependency]
     ) -> Self {
-        .makeTarget(name: target.rawValue,
-                    product: .staticLibrary,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
-                    infoPlist: .default,
-                    sources: ["Sources/**"],
-                    scripts: [.swiftLint],
-                    dependencies: dependencies)
+        
+        let infoPlist: InfoPlist = type == .Example ? .extendingDefault(with: [
+            "UIUserInterfaceStyle":"Light",
+            "LSRequiresIPhoneOS":.boolean(true),
+            "UIApplicationSceneManifest": [
+                "UIApplicationSupportsMultipleScenes": .boolean(false)
+            ],
+            "UILaunchStoryboardName": .string("")
+        ]) : .default
+        
+        return .makeTarget(
+            name: "\(target.rawValue)\(type.rawValue)",
+            product: type.product,
+            bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)\(type.rawValue)",
+            infoPlist: infoPlist,
+            sources: [type.sources],
+            scripts: [.swiftLint],
+            dependencies: dependencies
+        )
     }
     
-    static func makeFeatureExample(
-        target: ModulePaths.Feature,
-        dependencies: [TargetDependency] = []
-    ) -> Self {
-        .makeTarget(name: "\(target.rawValue)Example",
-                    product: .app,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)Example",
-                    infoPlist: .extendingDefault(with: [
-                        "UIUserInterfaceStyle":"Light",
-                        "LSRequiresIPhoneOS":.boolean(true),
-                        "UIApplicationSceneManifest": [
-                            "UIApplicationSupportsMultipleScenes": .boolean(false)
-                        ],
-                        "UILaunchStoryboardName": .string("")
-                    ]),
-                    sources: ["Example/**"],
-                    dependencies: dependencies)
-    }
-    
-    static func makeService(
-        target: ModulePaths.Service,
+    static func domain(
+        target: ModulePaths.Domain,
+        type: MicroModule.MicroDomainMudule,
         dependencies: [TargetDependency]
     ) -> Self {
-        .makeTarget(name: target.rawValue,
-                    product: .staticLibrary,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
-                    infoPlist: .default,
-                    sources: ["Sources/**"],
-                    scripts: [.swiftLint],
-                    dependencies: dependencies)
+        .makeTarget(
+            name: "\(target.rawValue)\(type.rawValue)",
+            product: type.product,
+            bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)\(type.rawValue)",
+            infoPlist: .default,
+            sources: [type.source],
+            scripts: [.swiftLint],
+            dependencies: dependencies
+        )
     }
     
-    static func makeShared(
+    static func shared(
         target: ModulePaths.Shared,
         dependencies: [TargetDependency]
     ) -> Self {
-        .makeTarget(name: target.rawValue,
-                    product: .staticFramework,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
-                    infoPlist: .default,
-                    sources: ["Sources/**"],
-                    scripts: [.swiftLint],
-                    dependencies: dependencies)
+        .makeTarget(
+            name: target.rawValue,
+            product: .framework,
+            bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
+            infoPlist: .default,
+            sources: ["Sources/**"],
+            scripts: [.swiftLint],
+            dependencies: dependencies
+        )
     }
     
-    static func makeUserInterface(
+    static func userInterface(
         target: ModulePaths.UserInterface,
+        type: MicroModule.MicroUserInterfaceModule,
         dependencies: [TargetDependency] = []
     ) -> Self {
-        .makeTarget(name: target.rawValue,
-                    product: .staticFramework,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)",
-                    infoPlist: .default,
-                    sources: ["Sources/**"],
-                    resources: ["Resources/**"],
-                    scripts: [.swiftLint],
-                    dependencies: dependencies)
-    }
-    
-    static func makeUserInterfaceExample(
-        target: ModulePaths.UserInterface,
-        dependencies: [TargetDependency]
-    ) -> Self {
-        .makeTarget(name: "\(target.rawValue)Example",
-                    product: .app,
-                    bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)Example",
-                    infoPlist: .extendingDefault(with: [
-                        "UIUserInterfaceStyle":"Light",
-                        "LSRequiresIPhoneOS":.boolean(true),
-                        "UIApplicationSceneManifest": [
-                            "UIApplicationSupportsMultipleScenes": .boolean(false)
-                        ],
-                        "UILaunchStoryboardName": .string("")
-                    ]),
-                    sources: ["Example/**"],
-                    resources: ["Resources/**"],
-                    scripts: [.swiftLint],
-                    dependencies: dependencies)
+        
+        let infoPlist: InfoPlist = type == .Example ? .extendingDefault(with: [
+            "UIUserInterfaceStyle":"Light",
+            "LSRequiresIPhoneOS":.boolean(true),
+            "UIApplicationSceneManifest": [
+                "UIApplicationSupportsMultipleScenes": .boolean(false)
+            ],
+            "UILaunchStoryboardName": .string("")
+        ]) : .default
+        
+        let resources: ResourceFileElements? = type == .UserInterface ? ["Resources/**"] : nil
+        
+        return .makeTarget(
+            name: "\(target.rawValue)\(type.rawValue)",
+            product: type.product,
+            bundleId: "\(env.organizationName).\(env.name).\(target.rawValue)\(type.rawValue)",
+            infoPlist: infoPlist,
+            sources: [type.source],
+            resources: resources,
+            scripts: [.swiftLint],
+            dependencies: dependencies
+        )
     }
 }

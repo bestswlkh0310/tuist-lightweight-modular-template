@@ -1,21 +1,21 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let project = Project.makeFeature(
+let project = Project.makeDomain(
     target: .Base,
     targets: [
-        .feature(
+        .domain(
             target: .Base,
             type: .Interface,
             dependencies: [
                 .shared(target: .GlobalThirdPartyLibrary)
             ]
         ),
-        .feature(
+        .domain(
             target: .Base,
-            type: .Feature,
+            type: .Domain,
             dependencies: [
-                .feature(target: .Base, type: .Interface)
+                .domain(target: .Base, type: .Interface),
             ]
         )
     ]

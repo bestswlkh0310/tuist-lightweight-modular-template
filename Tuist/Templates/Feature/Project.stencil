@@ -2,13 +2,42 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeFeature(
-    target: .{{ name }}Feature,
+    target: .{{ name }},
     targets: [
-        .makeFeature(target: .{{ name }}Feature, dependencies: [
-            .feature(target: .BaseFeature)
-        ]),
-        .makeFeatureExample(target: .{{ name }}Feature, dependencies: [
-            .feature(target: .{{ name }}Feature)
-        ])
+        .feature(
+            target: .{{ name }},
+            type: .Interface,
+            dependencies: [
+                .feature(target: .Base, type: .Interface)
+            ]
+        ),
+        .feature(
+            target: .{{ name }},
+            type: .Feature,
+            dependencies: [
+                .feature(target: .{{ name }}, type: .Interface)
+            ]
+        ),
+        .feature(
+            target: .{{ name }},
+            type: .Example,
+            dependencies: [
+                .feature(target: .{{ name }}, type: .Feature)
+            ]
+        ),
+        .feature(
+            target: .{{ name }},
+            type: .Testing,
+            dependencies: [
+                .feature(target: .{{ name }}, type: .Feature)
+            ]
+        ),
+        .feature(
+            target: .{{ name }},
+            type: .Tests,
+            dependencies: [
+                .feature(target: .{{ name }}, type: .Testing)
+            ]
+        )
     ]
 )

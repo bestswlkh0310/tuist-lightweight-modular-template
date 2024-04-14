@@ -1,16 +1,7 @@
-//
-//  ModulePaths.swift
-//  ProjectDescriptionHelpers
-//
-//  Created by dgsw8th71 on 3/26/24.
-//
-
-import Foundation
-
 public enum ModulePaths {
     case app(App)
-    case feature(Feature)
-    case service(Service)
+    case feature(Feature, MicroModule.MicroFeatureModule)
+    case domain(Domain, MicroModule.MicroDomainMudule)
     case shared(Shared)
     case userInterface(UserInterface)
 }
@@ -22,13 +13,13 @@ public extension ModulePaths {
     }
     
     enum Feature: String, CaseIterable {
-        case BaseFeature
-        case ExampleFeature
+        case Base
+        case Example
     }
     
-    enum Service: String, CaseIterable {
-        case BaseService
-        case ExampleService
+    enum Domain: String, CaseIterable {
+        case Base
+        case Example
     }
     
     enum Shared: String, CaseIterable {

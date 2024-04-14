@@ -11,9 +11,9 @@ import ProjectDescriptionHelpers
 let project = Project.makeUserInterface(
     target: .DesignSystem,
     targets: [
-        .makeUserInterface(target: .DesignSystem, dependencies: [
+        .userInterface(target: .DesignSystem, type: .UserInterface, dependencies: [
         ]),
-        .makeUserInterfaceExample(target: .DesignSystem, dependencies: [
+        .userInterface(target: .DesignSystem, type: .Example, dependencies: [
             .userInterface(target: .DesignSystem)
         ])
     ]

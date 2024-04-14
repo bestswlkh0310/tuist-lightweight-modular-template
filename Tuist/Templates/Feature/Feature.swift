@@ -8,17 +8,29 @@ private let template = Template(
         nameAttribute
     ],
     items: [
-        .string(
-            path: "Projects/Feature/\(nameAttribute)Feature/Example/\(nameAttribute)ViewExample.swift",
-            contents: "import \(nameAttribute)Feature"
-        ),
-        .string(
-            path: "Projects/Feature/\(nameAttribute)Feature/Sources/\(nameAttribute)View.swift",
-            contents: "import BaseFeature"
-        ),
         .file(
             path: "Projects/Feature/\(nameAttribute)Feature/Project.swift",
             templatePath: "Project.stencil"
+        ),
+        .string(
+            path: "Projects/Feature/\(nameAttribute)Feature/Interface/\(nameAttribute).swift",
+            contents: "// made by tuist"
+        ),
+        .string(
+            path: "Projects/Feature/\(nameAttribute)Feature/Sources/\(nameAttribute).swift",
+            contents: "// made by tuist"
+        ),
+        .string(
+            path: "Projects/Feature/\(nameAttribute)Feature/Example/\(nameAttribute).swift",
+            contents: "// made by tuist"
+        ),
+        .string(
+            path: "Projects/Feature/\(nameAttribute)Feature/Tests/\(nameAttribute).swift",
+            contents: "// made by tuist"
+        ),
+        .string(
+            path: "Projects/Feature/\(nameAttribute)Feature/Testing/\(nameAttribute).swift",
+            contents: "// made by tuist"
         )
     ]
 )

@@ -2,34 +2,34 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.makeDomain(
-    target: .Example,
+    target: .{{ name }},
     targets: [
         .domain(
-            target: .Example,
+            target: .{{ name }},
             type: .Interface,
             dependencies: [
                 .domain(target: .Base, type: .Interface)
             ]
         ),
         .domain(
-            target: .Example,
+            target: .{{ name }},
             type: .Domain,
             dependencies: [
-                .domain(target: .Example, type: .Interface)
+                .domain(target: .{{ name }}, type: .Interface)
             ]
         ),
         .domain(
-            target: .Example,
+            target: .{{ name }},
             type: .Testing,
             dependencies: [
-                .domain(target: .Example, type: .Domain)
+                .domain(target: .{{ name }}, type: .Domain)
             ]
         ),
         .domain(
-            target: .Example,
+            target: .{{ name }},
             type: .Tests,
             dependencies: [
-                .domain(target: .Example, type: .Testing)
+                .domain(target: .{{ name }}, type: .Testing)
             ]
         )
     ]

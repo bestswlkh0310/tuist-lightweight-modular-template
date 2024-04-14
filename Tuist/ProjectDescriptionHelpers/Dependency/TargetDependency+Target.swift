@@ -1,25 +1,20 @@
-//
-//  TargetDependency+Target.swift
-//  ProjectDescriptionHelpers
-//
-//  Created by dgsw8th71 on 3/26/24.
-//
-
 import ProjectDescription
 
 public extension TargetDependency {
     static func feature(
-        target: ModulePaths.Feature
+        target: ModulePaths.Feature,
+        type: MicroModule.MicroFeatureModule
     ) -> TargetDependency {
-        .project(target: target.rawValue,
+        .project(target: "\(target.rawValue)\(type.rawValue)",
                  path: .relativeToFeature(target.rawValue))
     }
     
-    static func service(
-        target: ModulePaths.Service
+    static func domain(
+        target: ModulePaths.Domain,
+        type: MicroModule.MicroDomainMudule
     ) -> TargetDependency {
-        .project(target: target.rawValue,
-                 path: .relativeToSerivce(target.rawValue))
+        .project(target: "\(target.rawValue)\(type.rawValue)",
+                 path: .relativeToDomain(target.rawValue))
     }
     
     static func userInterface(
